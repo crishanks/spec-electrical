@@ -1,9 +1,16 @@
-// Querying with "sanityFetch" will keep content automatically updated
-// Before using it, import and render "<SanityLive />" in your layout, see
-// https://github.com/sanity-io/next-sanity#live-content-api for more information.
 import { defineLive } from "next-sanity/live";
-import { client } from './client'
+import { client, sanityConfigured } from "./client";
+import { createClient } from "next-sanity";
+
+const liveClient = sanityConfigured
+  ? client!
+  : createClient({
+      projectId: "placeholder",
+      dataset: "production",
+      apiVersion: "2024-01-01",
+      useCdn: false,
+    });
 
 export const { sanityFetch, SanityLive } = defineLive({
-  client,
+  client: liveClient,
 });
