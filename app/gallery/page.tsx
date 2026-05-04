@@ -28,6 +28,14 @@ const CATEGORY_LABELS: Record<string, string> = {
   residential: "Residential",
 };
 
+type GalleryItem = {
+  _id: string;
+  title: string;
+  category: string;
+  description?: string;
+  imageUrl?: string;
+};
+
 export default async function GalleryPage() {
   const sanityItems = await getGalleryItems();
   const hasSanityItems = sanityItems && sanityItems.length > 0;
@@ -60,50 +68,46 @@ export default async function GalleryPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {hasSanityItems ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {sanityItems.map((item: { _id: string; title: string; category: string; description?: string; imageUrl?: string }) => {
-                return (
-                  <div
-                    key={item._id}
-                    className="rounded-xl overflow-hidden bg-slate-900 border border-slate-800"
-                  >
-                    <div className="relative h-48">
-                      {item.imageUrl ? (
-                        <Image
-                          src={item.imageUrl}
-                          alt={item.title}
-                          fill
-                          className="object-cover"
-                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        />
-                      ) : (
-                        <div className="h-full bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center text-slate-600 text-sm">
-                          Project Photo
-                        </div>
-                      )}
+              {(sanityItems as GalleryItem[]).map((item) => (
+                <div
+                  key={item._id}
+                  className="rounded-xl overflow-hidden bg-slate-900 border border-slate-800"
+                >
+                  {item.imageUrl ? (
+                    <div className="relative h-52 w-full">
+                      <Image
+                        src={item.imageUrl}
+                        alt={item.title}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      />
                     </div>
-                    <div className="p-5">
-                      <span className="inline-block px-2 py-0.5 rounded text-xs bg-amber-500/10 text-amber-400 font-medium mb-2">
-                        {CATEGORY_LABELS[item.category] ?? item.category}
-                      </span>
-                      <h3 className="text-white font-bold">{item.title}</h3>
-                      {item.description && (
-                        <p className="text-slate-400 text-sm mt-1">{item.description}</p>
-                      )}
+                  ) : (
+                    <div className="h-52 bg-linear-to-br from-slate-800 to-slate-900 flex items-center justify-center text-slate-600 text-sm">
+                      No image uploaded
                     </div>
+                  )}
+                  <div className="p-5">
+                    <span className="inline-block px-2 py-0.5 rounded text-xs bg-amber-500/10 text-amber-400 font-medium mb-2">
+                      {CATEGORY_LABELS[item.category] ?? item.category}
+                    </span>
+                    <h3 className="text-white font-bold">{item.title}</h3>
+                    {item.description && (
+                      <p className="text-slate-400 text-sm mt-1">{item.description}</p>
+                    )}
                   </div>
-                );
-              })}
+                </div>
+              ))}
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {PLACEHOLDER_PROJECTS.map((project) => (
                 <div
                   key={project.id}
-                  className="rounded-xl overflow-hidden bg-slate-900 border border-slate-800 group"
+                  className="rounded-xl overflow-hidden bg-slate-900 border border-slate-800"
                 >
-                  <div
-                    className={`h-52 bg-gradient-to-br ${project.color} flex items-center justify-center`}
-                  >
+                  <div className={`h-52 bg-linear-to-br ${project.color} flex items-center justify-center`}>
                     <span className="text-slate-500 text-sm">Project Photo</span>
                   </div>
                   <div className="p-5">
@@ -111,9 +115,7 @@ export default async function GalleryPage() {
                       {CATEGORY_LABELS[project.category]}
                     </span>
                     <h3 className="text-white font-bold">{project.title}</h3>
-                    <p className="text-slate-400 text-sm mt-1">
-                      Greater Springfield Area
-                    </p>
+                    <p className="text-slate-400 text-sm mt-1">Greater Springfield Area</p>
                   </div>
                 </div>
               ))}
