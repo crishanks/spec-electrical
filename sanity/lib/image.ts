@@ -1,15 +1,11 @@
 import imageUrlBuilder from "@sanity/image-url";
 
-const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
+const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ?? "placeholder";
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
 
-const builder =
-  projectId
-    ? imageUrlBuilder({ projectId, dataset })
-    : null;
+const builder = imageUrlBuilder({ projectId, dataset });
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function urlFor(source: any) {
-  if (!builder) return { url: () => "" };
   return builder.image(source);
 }

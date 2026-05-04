@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import ContactCTA from "@/components/sections/ContactCTA";
 import { getGalleryItems } from "@/sanity/lib/queries";
+import { urlFor } from "@/sanity/lib/image";
 
 export const metadata: Metadata = {
   title: "Project Gallery",
@@ -25,6 +27,15 @@ const CATEGORY_LABELS: Record<string, string> = {
   lighting: "Lighting",
   commercial: "Commercial",
   residential: "Residential",
+};
+
+type GalleryItem = {
+  _id: string;
+  title: string;
+  category: string;
+  description?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  image?: any;
 };
 
 export default async function GalleryPage() {
@@ -59,36 +70,51 @@ export default async function GalleryPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {hasSanityItems ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {sanityItems.map((item: { _id: string; title: string; category: string; description?: string }) => (
-                <div
-                  key={item._id}
-                  className="rounded-xl overflow-hidden bg-slate-900 border border-slate-800"
-                >
-                  <div className="h-48 bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center text-slate-600 text-sm">
-                    Project Photo
-                  </div>
-                  <div className="p-5">
-                    <span className="inline-block px-2 py-0.5 rounded text-xs bg-amber-500/10 text-amber-400 font-medium mb-2">
-                      {CATEGORY_LABELS[item.category] ?? item.category}
-                    </span>
-                    <h3 className="text-white font-bold">{item.title}</h3>
-                    {item.description && (
-                      <p className="text-slate-400 text-sm mt-1">{item.description}</p>
+              {(sanityItems as GalleryItem[]).map((item) => {
+                const imageUrl = item.image
+                  ? urlFor(item.image).width(600).height(400).fit("crop").url()
+                  : null;
+                return (
+                  <div
+                    key={item._id}
+                    className="rounded-xl overflow-hidden bg-slate-900 border border-slate-800"
+                  >
+                    {imageUrl ? (
+                      <div className="relative h-52 w-full">
+                        <Image
+                          src={imageUrl}
+                          alt={item.title}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        />
+                      </div>
+                    ) : (
+                      <div className="h-52 bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center text-slate-600 text-sm">
+                        No image uploaded
+                      </div>
                     )}
+                    <div className="p-5">
+                      <span className="inline-block px-2 py-0.5 rounded text-xs bg-amber-500/10 text-amber-400 font-medium mb-2">
+                        {CATEGORY_LABELS[item.category] ?? item.category}
+                      </span>
+                      <h3 className="text-white font-bold">{item.title}</h3>
+                      {item.description && (
+                        <p className="text-slate-400 text-sm mt-1">{item.description}</p>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {PLACEHOLDER_PROJECTS.map((project) => (
                 <div
                   key={project.id}
-                  className="rounded-xl overflow-hidden bg-slate-900 border border-slate-800 group"
+                  className="rounded-xl overflow-hidden bg-slate-900 border border-slate-800"
                 >
-                  <div
-                    className={`h-52 bg-gradient-to-br ${project.color} flex items-center justify-center`}
-                  >
+                  <div className={`h-52 bg-gradient-to-br ${project.color} flex items-center justify-center`}>
                     <span className="text-slate-500 text-sm">Project Photo</span>
                   </div>
                   <div className="p-5">
@@ -96,9 +122,7 @@ export default async function GalleryPage() {
                       {CATEGORY_LABELS[project.category]}
                     </span>
                     <h3 className="text-white font-bold">{project.title}</h3>
-                    <p className="text-slate-400 text-sm mt-1">
-                      Greater Springfield Area
-                    </p>
+                    <p className="text-slate-400 text-sm mt-1">Greater Springfield Area</p>
                   </div>
                 </div>
               ))}
