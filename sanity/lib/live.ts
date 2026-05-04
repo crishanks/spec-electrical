@@ -5,7 +5,7 @@ import { createClient } from "next-sanity";
 const liveClient = sanityConfigured
   ? client!
   : createClient({
-      projectId: "placeholder",
+      projectId: "bbud04i7",
       dataset: "production",
       apiVersion: "2024-01-01",
       useCdn: false,
