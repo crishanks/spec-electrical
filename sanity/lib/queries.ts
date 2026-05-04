@@ -2,7 +2,25 @@ import { client } from "./client";
 
 export async function getSiteSettings() {
   if (!client) return null;
-  return client.fetch(`*[_type == "siteSettings"][0]`);
+  return client.fetch(`*[_type == "siteSettings"][0] {
+    companyName,
+    tagline,
+    phone,
+    email,
+    address,
+    city,
+    serviceAreas,
+    licenseNumber,
+    founded,
+    heroBadgeText,
+    heroHeadline,
+    heroAccentWord,
+    heroSubheading,
+    "heroImageUrl": heroImage.asset->url,
+    "heroImageLqip": heroImage.asset->metadata.lqip,
+    seoTitle,
+    seoDescription
+  }`);
 }
 
 export async function getServices() {

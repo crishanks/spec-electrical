@@ -19,6 +19,38 @@ export const siteSettings = defineType({
     }),
     defineField({ name: "licenseNumber", title: "License Number", type: "string" }),
     defineField({ name: "founded", title: "Year Founded", type: "string" }),
+    defineField({
+      name: "heroBadgeText",
+      title: "Hero Badge Text",
+      type: "string",
+      description: 'Small badge above the headline. E.g. "Licensed & Insured · 24/7 Emergency Service"',
+    }),
+    defineField({
+      name: "heroHeadline",
+      title: "Hero Headline",
+      type: "string",
+      description: "Main heading on the homepage.",
+    }),
+    defineField({
+      name: "heroAccentWord",
+      title: "Hero Accent Word",
+      type: "string",
+      description: "The word in the headline that appears in amber/gold. Must match a word in the headline exactly.",
+    }),
+    defineField({
+      name: "heroSubheading",
+      title: "Hero Subheading",
+      type: "text",
+      rows: 3,
+      description: "Paragraph of text below the headline.",
+    }),
+    defineField({
+      name: "heroImage",
+      title: "Hero Background Image",
+      type: "image",
+      options: { hotspot: true },
+      description: "Optional background photo behind the hero. A dark overlay is applied automatically.",
+    }),
     defineField({ name: "seoTitle", title: "Default SEO Title", type: "string" }),
     defineField({
       name: "seoDescription",

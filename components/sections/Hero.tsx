@@ -1,10 +1,47 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Phone, ChevronRight } from "lucide-react";
 import { COMPANY } from "@/lib/data";
 
-export default function Hero() {
+interface HeroProps {
+  badgeText?: string;
+  headline?: string;
+  accentWord?: string;
+  subheading?: string;
+  imageUrl?: string;
+  serviceAreas?: string[];
+}
+
+export default function Hero({
+  badgeText = "Licensed & Insured · 24/7 Emergency Service",
+  headline = "Expert Electrical Services You Can Trust",
+  accentWord = "Services",
+  subheading = `Licensed, insured, and available 24/7. ${COMPANY.name} delivers safe, reliable electrical work for homes and businesses across the Greater ${COMPANY.serviceAreas[0]} area.`,
+  imageUrl,
+  serviceAreas,
+}: HeroProps) {
+  const accentIdx = accentWord ? headline.indexOf(accentWord) : -1;
+  const before = accentIdx > -1 ? headline.slice(0, accentIdx) : headline;
+  const after = accentIdx > -1 ? headline.slice(accentIdx + accentWord.length) : "";
+  const hasAccent = accentIdx > -1;
+
+  const areasText =
+    serviceAreas && serviceAreas.length > 0
+      ? `Serving ${serviceAreas.join(", ")} & surrounding areas`
+      : `Serving ${COMPANY.serviceAreas.join(", ")} & surrounding areas`;
+
   return (
     <section className="relative overflow-hidden bg-slate-950 circuit-bg">
+      {imageUrl && (
+        <Image
+          src={imageUrl}
+          alt=""
+          fill
+          className="object-cover opacity-20"
+          priority
+        />
+      )}
+
       {/* Amber glow */}
       <div
         aria-hidden
@@ -20,19 +57,23 @@ export default function Hero() {
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-400 text-xs font-semibold mb-6">
             <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-            Licensed &amp; Insured · 24/7 Emergency Service
+            {badgeText}
           </div>
 
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight tracking-tight">
-            Expert Electrical{" "}
-            <span className="text-amber-400">Services</span>{" "}
-            You Can Trust
+            {hasAccent ? (
+              <>
+                {before}
+                <span className="text-amber-400">{accentWord}</span>
+                {after}
+              </>
+            ) : (
+              headline
+            )}
           </h1>
 
           <p className="mt-6 text-lg sm:text-xl text-slate-300 leading-relaxed max-w-xl">
-            Licensed, insured, and available 24/7. Apex Electric delivers safe,
-            reliable electrical work for homes and businesses across the Greater
-            Springfield area.
+            {subheading}
           </p>
 
           <div className="mt-8 flex flex-col sm:flex-row gap-4">
@@ -52,9 +93,7 @@ export default function Hero() {
             </a>
           </div>
 
-          <p className="mt-6 text-slate-500 text-sm">
-            Serving Springfield, Chatham, Sherman, Rochester &amp; surrounding areas
-          </p>
+          <p className="mt-6 text-slate-500 text-sm">{areasText}</p>
         </div>
       </div>
     </section>
