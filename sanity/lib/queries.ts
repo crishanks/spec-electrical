@@ -2,25 +2,39 @@ import { client } from "./client";
 
 export async function getSiteSettings() {
   if (!client) return null;
-  return client.fetch(`*[_type == "siteSettings"][0] {
-    companyName,
-    tagline,
-    phone,
-    email,
-    address,
-    city,
-    serviceAreas,
-    licenseNumber,
-    founded,
-    heroBadgeText,
-    heroHeadline,
-    heroAccentWord,
-    heroSubheading,
-    "heroImageUrl": heroImage.asset->url,
-    "heroImageLqip": heroImage.asset->metadata.lqip,
-    seoTitle,
-    seoDescription
-  }`);
+  return client.fetch(
+    `*[_type == "siteSettings"][0] {
+      companyName,
+      tagline,
+      phone,
+      email,
+      address,
+      city,
+      serviceAreas,
+      licenseNumber,
+      founded,
+      seoTitle,
+      seoDescription
+    }`,
+    {},
+    { next: { revalidate: 60 } }
+  );
+}
+
+export async function getHeroSettings() {
+  if (!client) return null;
+  return client.fetch(
+    `*[_type == "heroSettings"][0] {
+      badgeText,
+      headline,
+      accentWord,
+      subheading,
+      "imageUrl": backgroundImage.asset->url,
+      "imageLqip": backgroundImage.asset->metadata.lqip
+    }`,
+    {},
+    { next: { revalidate: 60 } }
+  );
 }
 
 export async function getServices() {

@@ -1,5 +1,5 @@
-import { siteSettings, service, testimonial, galleryItem } from "./schemaTypes";
+import { siteSettings, heroSettings, service, testimonial, galleryItem } from "./schemaTypes";
 
 export const schema = {
-  types: [siteSettings, service, testimonial, galleryItem],
+  types: [siteSettings, heroSettings, service, testimonial, galleryItem],
 };

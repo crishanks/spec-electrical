@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
-import JsonLd from "@/components/JsonLd";
 import { COMPANY } from "@/lib/data";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
@@ -38,10 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${geist.variable} h-full`}>
       <body className="min-h-full flex flex-col bg-slate-950 text-slate-100 antialiased">
-        <JsonLd />
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        {children}
       </body>
     </html>
   );
