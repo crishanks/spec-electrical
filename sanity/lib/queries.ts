@@ -54,8 +54,8 @@ export async function getGalleryItems() {
       title,
       description,
       category,
-      image,
-      beforeImage
+      "imageUrl": image.asset->url,
+      "beforeImageUrl": beforeImage.asset->url
     }`
   );
 }

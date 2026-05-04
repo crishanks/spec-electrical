@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import ContactCTA from "@/components/sections/ContactCTA";
@@ -59,25 +60,39 @@ export default async function GalleryPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {hasSanityItems ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {sanityItems.map((item: { _id: string; title: string; category: string; description?: string }) => (
-                <div
-                  key={item._id}
-                  className="rounded-xl overflow-hidden bg-slate-900 border border-slate-800"
-                >
-                  <div className="h-48 bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center text-slate-600 text-sm">
-                    Project Photo
+              {sanityItems.map((item: { _id: string; title: string; category: string; description?: string; imageUrl?: string }) => {
+                return (
+                  <div
+                    key={item._id}
+                    className="rounded-xl overflow-hidden bg-slate-900 border border-slate-800"
+                  >
+                    <div className="relative h-48">
+                      {item.imageUrl ? (
+                        <Image
+                          src={item.imageUrl}
+                          alt={item.title}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        />
+                      ) : (
+                        <div className="h-full bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center text-slate-600 text-sm">
+                          Project Photo
+                        </div>
+                      )}
+                    </div>
+                    <div className="p-5">
+                      <span className="inline-block px-2 py-0.5 rounded text-xs bg-amber-500/10 text-amber-400 font-medium mb-2">
+                        {CATEGORY_LABELS[item.category] ?? item.category}
+                      </span>
+                      <h3 className="text-white font-bold">{item.title}</h3>
+                      {item.description && (
+                        <p className="text-slate-400 text-sm mt-1">{item.description}</p>
+                      )}
+                    </div>
                   </div>
-                  <div className="p-5">
-                    <span className="inline-block px-2 py-0.5 rounded text-xs bg-amber-500/10 text-amber-400 font-medium mb-2">
-                      {CATEGORY_LABELS[item.category] ?? item.category}
-                    </span>
-                    <h3 className="text-white font-bold">{item.title}</h3>
-                    {item.description && (
-                      <p className="text-slate-400 text-sm mt-1">{item.description}</p>
-                    )}
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
