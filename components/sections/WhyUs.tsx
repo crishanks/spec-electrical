@@ -3,21 +3,35 @@ import { WHY_US } from "@/lib/data";
 
 const ICON_MAP: Record<string, React.ElementType> = { FileText, Award, ShieldCheck };
 
-export default function WhyUs() {
+interface WhyUsItem {
+  icon: string;
+  title: string;
+  description: string;
+}
+
+interface WhyUsProps {
+  eyebrow?: string;
+  heading?: string;
+  items?: WhyUsItem[];
+}
+
+export default function WhyUs({
+  eyebrow = "Why Apex Electric",
+  heading = "The Apex Difference",
+  items = WHY_US,
+}: WhyUsProps) {
   return (
     <section className="bg-slate-900 py-16 sm:py-24 border-y border-slate-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <p className="text-amber-400 text-sm font-semibold uppercase tracking-widest mb-3">
-            Why Apex Electric
+            {eyebrow}
           </p>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white">
-            The Apex Difference
-          </h2>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-white">{heading}</h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {WHY_US.map(({ icon, title, description }) => {
+          {items.map(({ icon, title, description }) => {
             const Icon = ICON_MAP[icon] ?? ShieldCheck;
             return (
               <div key={title} className="flex flex-col items-start gap-4">

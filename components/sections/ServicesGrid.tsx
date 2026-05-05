@@ -49,23 +49,34 @@ function ServiceCard({ name, tagline, icon, slug }: ServiceCardProps) {
 
 interface ServicesGridProps {
   services?: typeof SERVICES;
+  eyebrow?: string;
+  heading?: string;
+  description?: string;
+  ctaLabel?: string;
+  ctaHref?: string;
 }
 
-export default function ServicesGrid({ services = SERVICES }: ServicesGridProps) {
+export default function ServicesGrid({
+  services = SERVICES,
+  eyebrow = "What We Do",
+  heading = "Electrical Services for Every Need",
+  description = "From a single outlet to a full commercial build-out, Apex Electric has the experience and equipment to get the job done right the first time.",
+  ctaLabel = "View All Services",
+  ctaHref = "/services",
+}: ServicesGridProps) {
   return (
     <section className="bg-slate-950 py-16 sm:py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <p className="text-amber-400 text-sm font-semibold uppercase tracking-widest mb-3">
-            What We Do
+            {eyebrow}
           </p>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white">
-            Electrical Services for Every Need
+            {heading}
           </h2>
-          <p className="mt-4 text-slate-400 max-w-xl mx-auto">
-            From a single outlet to a full commercial build-out, Apex Electric has
-            the experience and equipment to get the job done right the first time.
-          </p>
+          {description && (
+            <p className="mt-4 text-slate-400 max-w-xl mx-auto">{description}</p>
+          )}
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -82,10 +93,10 @@ export default function ServicesGrid({ services = SERVICES }: ServicesGridProps)
 
         <div className="text-center mt-10">
           <Link
-            href="/services"
+            href={ctaHref}
             className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-slate-700 hover:border-amber-500/40 text-white hover:text-amber-400 font-semibold text-sm transition-colors"
           >
-            View All Services <ChevronRight className="w-4 h-4" />
+            {ctaLabel} <ChevronRight className="w-4 h-4" />
           </Link>
         </div>
       </div>

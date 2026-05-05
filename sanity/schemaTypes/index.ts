@@ -1,5 +1,11 @@
 export { siteSettings } from "./siteSettings";
-export { heroSettings } from "./heroSettings";
+export { page } from "./page";
+export { heroBlock } from "./blocks/heroBlock";
+export { trustBarBlock } from "./blocks/trustBarBlock";
+export { servicesGridBlock } from "./blocks/servicesGridBlock";
+export { whyUsBlock } from "./blocks/whyUsBlock";
+export { testimonialsBlock } from "./blocks/testimonialsBlock";
+export { contactCtaBlock } from "./blocks/contactCtaBlock";
 export { service } from "./service";
 export { testimonial } from "./testimonial";
 export { galleryItem } from "./galleryItem";

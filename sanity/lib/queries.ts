@@ -21,18 +21,19 @@ export async function getSiteSettings() {
   );
 }
 
-export async function getHeroSettings() {
+export async function getPage(slug: string) {
   if (!client) return null;
   return client.fetch(
-    `*[_type == "heroSettings"][0] {
-      badgeText,
-      headline,
-      accentWord,
-      subheading,
-      "imageUrl": backgroundImage.asset->url,
-      "imageLqip": backgroundImage.asset->metadata.lqip
+    `*[_type == "page" && slug.current == $slug][0] {
+      title,
+      "sections": sections[] {
+        ...,
+        _type == "heroBlock" => {
+          "imageUrl": backgroundImage.asset->url
+        }
+      }
     }`,
-    {},
+    { slug },
     { next: { revalidate: 60 } }
   );
 }

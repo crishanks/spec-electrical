@@ -2,7 +2,15 @@ import Link from "next/link";
 import { Phone, ChevronRight } from "lucide-react";
 import { COMPANY } from "@/lib/data";
 
-export default function ContactCTA() {
+interface ContactCTAProps {
+  heading?: string;
+  description?: string;
+}
+
+export default function ContactCTA({
+  heading = "Ready to get started?",
+  description = "Call us today or request a free estimate online. We respond within 1 hour.",
+}: ContactCTAProps) {
   return (
     <section className="relative overflow-hidden bg-amber-500">
       <div
@@ -18,11 +26,9 @@ export default function ContactCTA() {
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
           <div>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-950 leading-tight">
-              Ready to get started?
+              {heading}
             </h2>
-            <p className="mt-2 text-slate-800 text-lg">
-              Call us today or request a free estimate online. We respond within 1 hour.
-            </p>
+            <p className="mt-2 text-slate-800 text-lg">{description}</p>
           </div>
           <div className="flex flex-col sm:flex-row gap-4 shrink-0">
             <a

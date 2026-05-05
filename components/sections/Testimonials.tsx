@@ -24,22 +24,26 @@ interface Testimonial {
 
 interface TestimonialsProps {
   testimonials?: Testimonial[];
+  eyebrow?: string;
+  heading?: string;
+  description?: string;
 }
 
-export default function Testimonials({ testimonials = TESTIMONIALS }: TestimonialsProps) {
+export default function Testimonials({
+  testimonials = TESTIMONIALS,
+  eyebrow = "Customer Reviews",
+  heading = "What Our Customers Say",
+  description = "Don't take our word for it — hear from Springfield-area homeowners and businesses.",
+}: TestimonialsProps) {
   return (
     <section className="bg-slate-950 py-16 sm:py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <p className="text-amber-400 text-sm font-semibold uppercase tracking-widest mb-3">
-            Customer Reviews
+            {eyebrow}
           </p>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white">
-            What Our Customers Say
-          </h2>
-          <p className="mt-4 text-slate-400">
-            Don't take our word for it — hear from Springfield-area homeowners and businesses.
-          </p>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-white">{heading}</h2>
+          {description && <p className="mt-4 text-slate-400">{description}</p>}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
